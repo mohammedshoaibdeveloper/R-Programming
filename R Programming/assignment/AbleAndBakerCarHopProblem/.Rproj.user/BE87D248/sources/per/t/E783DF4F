@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582466447980.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2901354756",
+    "id" : "E783DF4F",
+    "lastKnownWriteTime" : 1582467623,
+    "last_content_update" : 1582467623756,
+    "path" : "E:/5 Semester/Simulation & Modeling/Assigment/R Programming/assignment/AbleAndBakerCarHopProblem/main.R",
+    "project_path" : "main.R",
+    "properties" : {
+        "cursorPosition" : "144,0",
+        "scrollLine" : "115"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

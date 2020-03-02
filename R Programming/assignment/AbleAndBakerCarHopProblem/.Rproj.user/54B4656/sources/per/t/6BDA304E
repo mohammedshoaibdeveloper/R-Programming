@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582354476126.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "24|8|31|0|\n44|1|82|0|\n51|3|65|2|\n67|3|81|2|\n",
+    "hash" : "1555706887",
+    "id" : "6BDA304E",
+    "lastKnownWriteTime" : 1582379419,
+    "last_content_update" : 1582379419037,
+    "path" : "/media/tayyab/Data/programmes/R/AbleAndBakerCarHopProblem/main.R",
+    "project_path" : "main.R",
+    "properties" : {
+        "cursorPosition" : "142,0",
+        "scrollLine" : "127",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

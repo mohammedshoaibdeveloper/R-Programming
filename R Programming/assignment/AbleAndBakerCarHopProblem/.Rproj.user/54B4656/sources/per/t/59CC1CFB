@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582356047957.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3399368160",
+    "id" : "59CC1CFB",
+    "lastKnownWriteTime" : 1582371098,
+    "last_content_update" : 1582371098848,
+    "path" : "~/R/playground.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "96,16",
+        "docOutlineVisible" : "0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

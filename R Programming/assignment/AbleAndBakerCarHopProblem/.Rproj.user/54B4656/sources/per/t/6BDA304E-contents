@@ -1,0 +1,144 @@
+interArrivalTimes <- c(0)
+arrivalTimes <- c(0)
+
+# randomNumbersForServiceTimes
+# randomNumbersForServiceTimes <- c()
+
+# Able
+ableTimeServiceBegin <- c(0)
+ableServiceTime <- c()
+ableTimeServiceEnds <- c()
+
+# baker
+bakerTimeServiceBegin <- c(0)
+bakerServiceTime <- c(0)
+bakerTimeServiceEnds <- c(0)
+
+queueWaitTime <- c(0)
+# AbleAndBakerServiceEnd
+# 0 means free. any other number represents the minute at which the corresponding server will be free
+ableFreeAt <- 0
+bakerFreeAt <- 0
+
+simulationTime <- 60
+# Input for simulation time
+repeat {
+  simulationTime <-
+    readline("Enter the time in minutes for simulation : ")
+  if (!is.na(as.integer(simulationTime))) {
+    simulationTime <- as.integer(simulationTime)
+    break
+  }
+}
+
+customerNumber <- 1
+ableServiceTime[1] <-
+  ableFreeAt <-
+  ableTimeServiceEnds[1] <-
+  sample(c(2, 3, 4, 5),
+         size = 1,
+         prob = c(0.3, 0.28, 0.25, 0.17))
+
+
+
+while (ableFreeAt < simulationTime && bakerFreeAt < simulationTime) 
+{
+  customerNumber <- customerNumber + 1
+  
+  interArrivalTimes[customerNumber] <-sample(c(1, 2, 3, 4), size = 1, prob = c(0.25, 0.40, 0.20, 0.15))
+  arrivalTimes[customerNumber] <- interArrivalTimes[customerNumber] + arrivalTimes[customerNumber - 1]
+  
+  if (ableFreeAt <= arrivalTimes[customerNumber] ||ableFreeAt <= bakerFreeAt)
+  {
+    ableTimeServiceBegin[customerNumber] <- 
+      ifelse(ableFreeAt >= arrivalTimes[customerNumber], ableFreeAt, arrivalTimes[customerNumber])
+    
+    ableServiceTime[customerNumber] <- sample(c(2, 3, 4, 5),size = 1,prob = c(0.3, 0.28, 0.25, 0.17))
+    
+    ableFreeAt <- ableTimeServiceEnds[customerNumber] <- ableTimeServiceBegin[customerNumber] + ableServiceTime[customerNumber]
+    
+    if(ableTimeServiceBegin[customerNumber] > arrivalTimes[customerNumber])
+      queueWaitTime[customerNumber] <- ableTimeServiceBegin[customerNumber] - arrivalTimes[customerNumber]
+    else
+      queueWaitTime[customerNumber] <- 0
+    
+    bakerTimeServiceBegin[customerNumber] <- bakerServiceTime[customerNumber] <- bakerTimeServiceEnds[customerNumber] <- 0
+  }
+  else
+  {
+    bakerTimeServiceBegin[customerNumber] <- 
+      ifelse(bakerFreeAt >= arrivalTimes[customerNumber], bakerFreeAt, arrivalTimes[customerNumber])
+    
+    bakerServiceTime[customerNumber] <- sample(c(3, 4, 5, 6),size = 1,prob = c(0.35, 0.25, 0.20, 0.20))
+    
+    bakerFreeAt <- bakerTimeServiceEnds[customerNumber] <- bakerTimeServiceBegin[customerNumber] + bakerServiceTime[customerNumber]
+    
+    if(bakerTimeServiceBegin[customerNumber] > arrivalTimes[customerNumber])
+      queueWaitTime[customerNumber] <- bakerTimeServiceBegin[customerNumber] - arrivalTimes[customerNumber]
+    else
+      queueWaitTime[customerNumber] <- 0
+    
+    ableTimeServiceBegin[customerNumber] <- ableServiceTime[customerNumber] <- ableTimeServiceEnds[customerNumber] <- 0
+  }
+}
+
+
+dfSimulation = data.frame(
+  "Time Between Arrivals"=interArrivalTimes,
+  "Clock Time Of Arrival"=arrivalTimes,
+  
+  "Able Time Service Begins"=ableTimeServiceBegin,
+  "Able Service Time" =ableServiceTime,
+  "Able Time Service Ends"=ableTimeServiceEnds,
+  
+  "Baker Time Service Begins"=bakerTimeServiceBegin,
+  "Baker Service Time"=bakerServiceTime,
+  "Baker Time Service Ends"=bakerTimeServiceEnds,
+  
+  "Time In Queue"=queueWaitTime
+)
+
+print(dfSimulation)
+# df = data.frame(
+#   "ABLE"=""
+# )
+# df2=data.frame(
+#   "BAKER"=""
+# )
+# #creating an Excel workbook. Both .xls and .xlsx file formats can be used.
+# wb <- loadWorkbook("output.xlsx", create = TRUE)
+# 
+# #creating sheets within an Excel workbook
+# createSheet(wb, name = "simulation")
+# 
+# #writing into sheets within an Excel workbook : 
+# #writing ChickWeight data frame into chickSheet
+# writeWorksheet(wb, df, sheet = "simulation", startRow =1, startCol = 4)
+# writeWorksheet(wb, df2, sheet = "simulation", startRow =1, startCol = 7)
+# writeWorksheet(wb, dfSimulation, sheet = "simulation", startRow =2, startCol = 1)
+# 
+# #saving a workbook to an Excel file :
+# #saves a workbook to the corresponding Excel file and writes the file to disk.
+# saveWorkbook(wb)
+write.xlsx(dfSimulation, paste(getwd(),"output.xlsx",sep = "/"), sheetName = "simulation")
+
+
+actualSimulationTime <- ifelse(ableFreeAt>=bakerFreeAt, ableFreeAt, bakerFreeAt)
+totalOfAbleServiceTime <- sum(ableServiceTime)
+percentageOfSimulationAbleWasBusy <- totalOfAbleServiceTime/actualSimulationTime*100
+totalBakerServiceTime <- sum(bakerServiceTime)
+percentageOfSimulationBakerWasBusy <- totalBakerServiceTime/actualSimulationTime * 100
+
+totalCustomers <- length(queueWaitTime)
+customersWhoWaited <- length(which(queueWaitTime!=0))
+percentageOfCutomersWhoWaited <- customersWhoWaited/totalCustomers*100
+
+avgWaitTimeOfAllCustomers <- sum(queueWaitTime)/totalCustomers
+avgWaitTimeOfCustomersWhoWaited <- sum(queueWaitTime)/customersWhoWaited
+result <- c("Total simulation time: ",actualSimulationTime,"\n",
+            "Able was busy for: ",totalOfAbleServiceTime," minutes(",percentageOfSimulationAbleWasBusy,"%)\n",
+            "Baker was busy for: ",totalBakerServiceTime," minutes(",percentageOfSimulationBakerWasBusy,"%)\n",
+            "Out of ", totalCustomers, ", ", customersWhoWaited, "(",percentageOfCutomersWhoWaited,"%)", " had to wait for an avg of ", avgWaitTimeOfCustomersWhoWaited, " minutes")
+result <- paste(result, collapse = " ")
+
+write.xlsx(result, paste(getwd(),"output.xlsx",sep = "/"), sheetName = "result",append = TRUE)
